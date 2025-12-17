@@ -4,7 +4,7 @@
 
         <!-- Name -->
         <div class="mb-3">
-            <label for="name" class="form-label">{{ __('Name') }}</label>
+            <label for="name" class="form-label">{{ __('Nome') }}</label>
             <input id="name" class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
             @error('name')
             <div class="invalid-feedback">
@@ -26,7 +26,7 @@
 
         <!-- Password -->
         <div class="mb-3">
-            <label for="password" class="form-label">{{ __('Password') }}</label>
+            <label for="password" class="form-label">{{ __('Senha') }}</label>
             <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="new-password">
             @error('password')
             <div class="invalid-feedback">
@@ -37,7 +37,7 @@
 
         <!-- Confirm Password -->
         <div class="mb-3">
-            <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
+            <label for="password_confirmation" class="form-label">{{ __('Confirmar Senha') }}</label>
             <input id="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" required autocomplete="new-password">
             @error('password_confirmation')
             <div class="invalid-feedback">
@@ -46,14 +46,18 @@
             @enderror
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <a class="text-decoration-none text-muted small" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        <div class="mb-3">
+            <x-file-avatar-input />
+        </div>
 
-            <button type="submit" class="btn btn-primary ms-3">
-                {{ __('Register') }}
+        <div class="d-flex flex-column justify-content-between align-items-center mt-4">
+            <button type="submit" class="btn btn-primary w-100 fw-bolder">
+                {{ __('Cadastrar') }}
             </button>
+
+            <a class="text-decoration-none text-muted small mt-4" href="{{ route('login') }}">
+                {{ __('Já possui uma conta?') }}
+            </a>
         </div>
     </form>
 </x-guest-layout>

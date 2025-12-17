@@ -32,16 +32,28 @@
             </label>
         </div>
 
-        <div class="d-flex align-items-center justify-content-end mt-4">
+
+
+        <div class="d-flex flex-column align-items-center justify-content-start mt-4">
+
+            <x-primary-button>
+                {{ __('Entrar') }}
+            </x-primary-button>
+
+
             @if (Route::has('password.request'))
-            <a class="text-decoration-none text-muted me-3" href="{{ route('password.request') }}">
-                {{ __('Forgot your password?') }}
+            <a class="text-decoration-none text-muted me-3 mt-4" href="{{ route('password.request') }}">
+                {{ __('Esqueceu sua Senha ?') }}
             </a>
             @endif
 
-            <x-primary-button>
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
+            @if (Route::has('register'))
+            <a href="{{ route('register') }}" class="ml-4 text-decoration-none text-muted">
+                {{ __('Crie uma Conta') }}
+            </a>
+            @endif
+
+
+
     </form>
 </x-guest-layout>

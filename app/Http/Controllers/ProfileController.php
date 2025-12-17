@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileDeleteRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Services\Contracts\ProfileServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+
+    public function __construct(
+        private ProfileServiceInterface $service
+    ) {}
+
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('profile.edit', $this->service->edit($request));
     }
 
     /**
@@ -27,36 +33,25 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $userUpdated = $this->service->update($request);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        if ($userUpdated)
+            return Redirect::route('profile.edit')->with('message', 'Usuário alterado com sucesso!');
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('error', 'Erro ao alterar usuário');
     }
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(ProfileDeleteRequest $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        $deleted = $this->service->destroy($request);
 
-        $user = $request->user();
+        if ($deleted)
+            return Redirect::route('profile.edit')->with('message', 'Usuário excluído com sucesso!');
 
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return Redirect::route('profile.edit')->with('error', 'Erro ao excluir usuário');
     }
 
     /**
@@ -81,6 +76,6 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return Redirect::route('profile.edit')->with('status', 'avatar-updated');
+        return Redirect::route('profile.edit')->with('message', 'Avatar alterado com sucesso!');
     }
 }

@@ -15,7 +15,7 @@
             <!-- Left Side -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+                    {{ __('Users Deep') }}
                 </x-nav-link>
             </ul>
 

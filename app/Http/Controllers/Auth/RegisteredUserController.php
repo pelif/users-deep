@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisteredUserRequest;
 use App\Models\User;
+use App\Services\Contracts\RegisteredUserServiceInterface;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +16,12 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
+
+
+    public function __construct(
+        private RegisteredUserServiceInterface $service
+    ) {}
+
     /**
      * Display the registration view.
      */
@@ -27,24 +35,13 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RegisteredUserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $registered = $this->service->store($request->validated());
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($registered)
+            return redirect(route('dashboard', absolute: false))->with('success', 'Usuário registrado com sucesso');
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('register', absolute: false))->with('error', 'Erro ao registrar usuário');
     }
 }

@@ -9,9 +9,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm p-4">
                         <div class="card-header bg-white">
-                            <h4 class="mb-0">Bem-vindo, {{ Auth::user()->name }}!</h4>
+                            <h4 class="mb-0 fw-bold">Bem-vindo, {{ Auth::user()->name }}!</h4>
                         </div>
                         <div class="card-body">
                             @if (session('status'))
