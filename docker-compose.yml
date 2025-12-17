@@ -1,0 +1,71 @@
+version: '3.3'
+name: 'usersDeep'
+
+services:
+  #banco de dados
+  users_deep_db:
+    image: mysql:5.7
+    container_name: users_deep_db
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=users_deep
+      - MYSQL_USER=users_deep
+      - MYSQL_PASSWORD=123456
+      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      usersDeepNetwork:
+        ipv4_address: 140.72.0.2
+
+  #aplicação 
+  users_deep_app:
+    container_name: users_deep_app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    ports:
+      - "8081:80"
+    volumes:
+      - /var/www/storage
+      - ./:/var/www
+    env_file: .env
+    environment:
+      - "DB_HOST=users_deep_db"
+      - "DB_PORT=3306"
+    links:
+      - users_deep_db
+    depends_on:
+      - users_deep_db
+    networks:
+      usersDeepNetwork:
+        ipv4_address: 140.72.0.3
+
+  #servidor web - nginx
+  users_deep_nginx:
+    container_name: users_deep_nginx
+    build:
+      context: ./
+      dockerfile: nginx.Dockerfile
+    ports:
+      - "8088:80"
+    links:
+      - users_deep_app
+    volumes:
+      - ./:/var/www
+      - ./nginx/access.log:/var/log/nginx/access.log
+      - ./nginx/error.log:/var/log/nginx/error.log
+    networks:
+      usersDeepNetwork:
+        ipv4_address: 140.72.0.4
+
+networks:
+  usersDeepNetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 140.72.0.0/16
+
+volumes:
+  mysql:
