@@ -36,7 +36,7 @@ class ProfileController extends Controller
         $userUpdated = $this->service->update($request);
 
         if ($userUpdated)
-            return Redirect::route('profile.edit')->with('message', 'Usuário alterado com sucesso!');
+            return Redirect::route('profile.edit')->with('successInfo', 'Usuário alterado com sucesso!');
 
         return Redirect::route('profile.edit')->with('error', 'Erro ao alterar usuário');
     }
@@ -60,12 +60,13 @@ class ProfileController extends Controller
     public function uploadAvatar(Request $request): RedirectResponse
     {
         $request->validate([
-            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10000'],
         ]);
 
         $user = $request->user();
 
         if ($request->hasFile('avatar')) {
+
             // Delete old avatar if exists
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
@@ -76,6 +77,6 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return Redirect::route('profile.edit')->with('message', 'Avatar alterado com sucesso!');
+        return Redirect::route('profile.edit')->with('successAvatar', 'Avatar alterado com sucesso!');
     }
 }

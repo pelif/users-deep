@@ -32,8 +32,6 @@
             </label>
         </div>
 
-
-
         <div class="d-flex flex-column align-items-center justify-content-start mt-4">
 
             <x-primary-button>
@@ -52,8 +50,6 @@
                 {{ __('Crie uma Conta') }}
             </a>
             @endif
-
-
 
     </form>
 </x-guest-layout>

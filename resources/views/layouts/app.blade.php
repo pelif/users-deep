@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-light">
     <div class="min-vh-100 bg-light">
         @include('layouts.navigation')
 

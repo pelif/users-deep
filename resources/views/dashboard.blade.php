@@ -20,15 +20,23 @@
                             </div>
                             @endif
 
-                            <h5 class="card-title">Suas Informações</h5>
+                            @if (Auth::user()->avatar)
+                            <img src="{{ Storage::url(Auth::user()->avatar) }}"
+                                onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&color=7F9CF5&background=EBF4FF'"
+                                alt="Avatar"
+                                class="img-thumbnail rounded-circle"
+                                style="width: 80px; height: 80px; object-fit: cover;">
+                            @endif
+
+                            <h5 class="card-title mt-4">Suas Informações</h5>
                             <ul class="list-group list-group-flush mb-4">
-                                <li class="list-group-item">
+                                <li class="list-group-item p-3">
                                     <strong>Nome:</strong> {{ Auth::user()->name }}
                                 </li>
-                                <li class="list-group-item">
+                                <li class="list-group-item p-3 ">
                                     <strong>Email:</strong> {{ Auth::user()->email }}
                                 </li>
-                                <li class="list-group-item">
+                                <li class="list-group-item p-3">
                                     <strong>Membro desde:</strong> {{ Auth::user()->created_at->format('d/m/Y') }}
                                 </li>
                             </ul>

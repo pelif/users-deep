@@ -24,11 +24,11 @@ class PasswordController extends Controller
         $updated = $this->service->update($request->validated());
 
         if (!$updated) {
-            return back()->withErrors([
-                'current_password' => 'Senha atual inválida',
+            return back()->with([
+                'errorPassword' => 'Senha atual inválida',
             ]);
         }
 
-        return back()->with('message', 'Senha atualizada com sucesso');
+        return back()->with('successPassword', 'Senha atualizada com sucesso');
     }
 }

@@ -27,6 +27,7 @@ class RegisteredUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults(), 'min:8', 'max:255'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -46,7 +47,10 @@ class RegisteredUserRequest extends FormRequest
             'password.confirmed' => 'As senhas informadas não coincidem',
             'password.string' => 'O campo senha precisa ser uma string',
             'password.min' => 'O campo senha precisa ter no mínimo 8 caracteres',
-            'password.max' => 'O campo senha precisa ter no máximo 255 caracteres'
+            'password.max' => 'O campo senha precisa ter no máximo 255 caracteres',
+            'avatar.image' => 'O campo avatar precisa ser uma imagem',
+            'avatar.mimes' => 'O campo avatar precisa ser uma imagem com extensão jpeg, png, jpg ou gif',
+            'avatar.max' => 'O campo avatar precisa ter no máximo 2048 KB'
         ];
     }
 }

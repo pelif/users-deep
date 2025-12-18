@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}" class="needs-validation" novalidate>
+    <form method="POST" action="{{ route('register') }}" class="needs-validation" enctype="multipart/form-data">
         @csrf
 
         <!-- Name -->
@@ -46,9 +46,9 @@
             @enderror
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <x-file-avatar-input />
-        </div>
+        </div> -->
 
         <div class="d-flex flex-column justify-content-between align-items-center mt-4">
             <button type="submit" class="btn btn-primary w-100 fw-bolder">
